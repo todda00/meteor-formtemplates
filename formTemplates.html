@@ -1,0 +1,115 @@
+<template name="text_field">
+	<div class="input-group">
+    <span class="input-group-addon">
+      {{#if icon}}<i class='fa {{icon}}'></i>{{/if}}
+      {{label}}
+    </span>
+    <input 
+      type="text" 
+      name="{{name}}" 
+      class="form-control" 
+      value="{{value}}" 
+      {{disabled}} 
+      {{attrs}}
+    >
+  </div>
+</template>
+
+<template name="datepicker">
+	<div class="input-group">
+    <span class="input-group-addon">{{label}}</span>
+    <input 
+      type="text"
+      class="form-control datepicker"
+      name="{{name}}"
+      value="{{moment value 'MM/DD/YYYY'}}"
+      {{disabled}} 
+      {{attrs}}
+    >
+  </div>
+</template>
+
+<template name="selectpicker">
+	<select name="{{name}}" class='selectpicker'>
+    <option value="">{{label}}</option>
+    {{#each options}}
+    	<option {{selected ../value value}} value="{{value}}" {{attrs}}>{{display}}</option>
+    {{/each}}
+  </select>
+</template>
+
+<template name="submit">
+	<button 
+    type="submit" 
+    id= {{id}}
+    class="btn btn-success {{class}}"
+    {{disabled}}
+    {{attrs}}
+  >
+    {{#if iconLeft}}<i class='fa {{icon}}'></i>{{/if}}
+    {{label}}
+    {{#if iconRight}}<i class='fa {{icon}}'></i>{{/if}}
+  </button>
+</template>
+
+<template name="button">
+  <button 
+    type="{{type}}"
+    id= {{id}}
+    class="btn btn-default {{class}}"
+    {{disabled}}
+    {{attrs}}
+    data-toggle={{dropdown}}
+  >
+    {{#if iconLeft}}<i class='fa {{icon}}'></i> {{/if}}
+    {{label}}
+    {{#if iconRight}}<i class='fa {{icon}}'></i>{{/if}}
+    {{#if dropdown}}<i class='fa fa-caret-down'></i>{{/if}}
+  </button>
+</template>
+
+<template name="checkboxes">
+	<div class="form-group">
+		{{#each items}}
+      <div class="checkbox">
+				<label title={{details}} data-toggle="{{tooltip}}" data-placement="{{tooltipPos}}">
+					<input type="checkbox" {{checked value ../checked}} value="{{value}}" name="{{../name}}" {{attrs}}>{{display}}
+				</label>
+			</div>
+		{{/each}}
+	</div>
+</template>
+
+<template name='hidden'>
+	<input type='hidden' id={{id}} name='{{name}}' value='{{value}}' {{attrs}}> 
+</template>
+
+<template name='toggle'>
+  <input 
+    type="checkbox"
+    {{checkedBool value}}
+    data-toggle="toggle" 
+    name={{name}} 
+    id={{id}}
+    class={{class}} 
+    {{disabled}} 
+    {{attrs}}
+    data-on={{on}} 
+    data-off={{off}}
+    data-onstyle={{data_onstyle}}
+    data-offstyle={{data_offstyle}}
+  >
+</template>
+
+<template name='radioButtons'>
+  <div class="btn-group{{vertical}}" data-toggle="buttons">
+    {{#each items}}
+      <label class="btn btn-default {{active value ../value activeClass}} {{../class}}" title={{details}} data-toggle={{tooltip}} data-placement={{tooltipPos}} data-container="body">
+        <input type="radio" value="{{value}}" name="{{../name}}" {{checkedSingle value ../value}} {{attrs}}>
+        {{#if iconLeft}}<i class='fa {{icon}}'></i> {{/if}}
+        {{display}}
+        {{#if iconRight}}<i class='fa {{icon}}'></i>{{/if}}
+      </label>
+    {{/each}}
+  </div>  
+</template>
