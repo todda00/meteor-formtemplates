@@ -14,7 +14,6 @@ Package.onUse(function(api) {
   api.use(['coffeescript','jquery','templating']);
 
   api.versionsFrom('1.0.3.1');
-  api.addFiles('todda00:formtemplates.js');
   api.addFiles([
     'formTemplates.html',
     'formTemplates.coffee'
