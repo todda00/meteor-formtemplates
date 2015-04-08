@@ -1,6 +1,6 @@
 Package.describe({
   name: 'todda00:formtemplates',
-  version: '0.0.2',
+  version: '0.0.4',
   // Brief, one-line summary of the package.
   summary: 'Provides form templates for a variety of bootstrap form elements',
   // URL to the Git repository containing the source code for this package.
@@ -16,6 +16,7 @@ Package.onUse(function(api) {
   api.versionsFrom('1.0.3.1');
   api.addFiles([
     'formTemplates.html',
-    'formTemplates.coffee'
+    'formHelpers.coffee',
+    'formTemplates.coffee',
   ],'client');
 });
