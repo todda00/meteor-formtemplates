@@ -1,7 +1,7 @@
 #Global Helpers
 Template.registerHelper "selected", (key, val) ->
-  key = key.toString()
-  val = val.toString()
+  key = key.toString() if key?
+  val = val.toString() if val?
   return "" if !key? or !val?
   if key is val then return {selected: "selected"} else return ""
 
@@ -32,7 +32,7 @@ Template.registerHelper "iconRight", ->
   return true if @iconPosition is 'right'
 
 Template.registerHelper "tooltip", ->
-  return 'tooltip' if this.details?
+  return 'tooltip' if @details?
 
 #text field
 Template.text_field.helpers
@@ -47,8 +47,16 @@ Template.button.helpers
     return 'button'
 
 #Toggle
-Template.toggle.rendered = ->
-  @.$(@firstNode).bootstrapToggle()
+#Have to set a uniqueID in order to destroy the toggle properly
+Template.toggle.onCreated ->
+  @uniqueID = new ReactiveVar
+Template.toggle.onRendered ->
+  uniqueID = Random.id()
+  @$(@firstNode).bootstrapToggle().attr('data-uniqueID',uniqueID)
+  @uniqueID.set(uniqueID)
+Template.toggle.onDestroyed ->
+  uniqueID = @uniqueID.get()
+  $("[data-uniqueID="+uniqueID+"]").bootstrapToggle('destroy')
 
 #Radio Buttons
 Template.radioButtons.rendered = ->
@@ -81,7 +89,6 @@ Template.selectpicker.rendered = ->
 Template.selectpicker.destroyed = ->
   $("[name='"+@data.name+"']").selectpicker('destroy')
 
-#Important that the option remains in its own template for bootstrap select reactivity
 refreshSelectpicker = ->
   if(renderTimeout isnt false)
     Meteor.clearTimeout(renderTimeout)
@@ -91,20 +98,39 @@ refreshSelectpicker = ->
     renderTimeout = false
   , 10
 
-Template.selectpickerOption.rendered = ->
-  refreshSelectpicker()
+Template.selectpicker.helpers
+  options: ->
+    refreshSelectpicker()
+    return @options
 
-Template.selectpickerOption.destroyed = ->
-  refreshSelectpicker()
+
+
+
+# Template.selectpickerOption.rendered = ->
+#   console.log 'option rendered'
+#   # refreshSelectpicker()
+#   if(renderTimeout isnt false)
+#     Meteor.clearTimeout(renderTimeout)
+
+#   renderTimeout = Meteor.setTimeout ->
+#     $('.selectpicker').selectpicker("refresh")
+#     renderTimeout = false
+#   , 10
+
+# Template.selectpickerOption.destroyed = ->
+#   refreshSelectpicker()
 
 Template.selectpickerOption.helpers
   value: ->
     return @ if !@value?
     return @value
   display: ->
-    return @ if !@display?
-    return @display
-
+    return @display if @display?
+    return @label if @label?
+    return @
+  disabled: ->
+    return 'disabled' if @disabled is true
+    return null
 
 #Date picker
 Template.datepicker.rendered = ->

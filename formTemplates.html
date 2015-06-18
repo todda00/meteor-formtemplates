@@ -33,8 +33,10 @@
 </template>
 
 <template name="selectpicker">
-	<select name="{{name}}" class='selectpicker {{class}}' id={{id}} data-width={{dataWidth}} data-style={{dataStyle}}>
-    <option value="">{{#if icon}}<i class='fa {{icon}}'></i> {{/if}}{{label}}</option>
+  <select name="{{name}}" class='selectpicker {{class}}' id={{id}} data-width={{dataWidth}} data-size={{dataSize}} data-style={{dataStyle}} data-dropdown-align-right={{alignRight}} data-header={{header}}>
+    {{#if label}}
+      <option value="">{{#if icon}}<i class='fa {{icon}}'></i> {{/if}}{{label}}</option>
+    {{/if}}
     {{#each options}}
       {{> selectpickerOption}}
     {{/each}}
@@ -42,14 +44,23 @@
 </template>
 
 <template name='selectpickerOption'>
-  <option {{selected ../value value}} value="{{value}}" {{attrs}}>{{{display}}}</option>
+  <option 
+    {{selected ../value value}} 
+    value="{{value}}"     
+    {{disabled}}
+    class={{../optionClass}}
+    {{attrs}}
+    title={{../title}}
+    >
+    {{{display}}}
+  </option>
 </template>
 
 <template name="submit">
 	<button
     type="submit"
     id= {{id}}
-    class="btn btn-success {{class}}"
+    class="btn {{class}}"
     {{disabled}}
     {{attrs}}
   >
